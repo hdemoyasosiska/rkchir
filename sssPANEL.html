@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glassmorphism Registration</title>
+    <link rel="stylesheet" href="sssENTER.css">
+</head>
+<body>
+    <div class="glassmorphism-form">
+        <h2>Вход</h2>
+        <form id="fff">
+            <input type="email" placeholder="Почта">
+            <input type="password" placeholder="Пароль">
+            <button>Войти</button>
+        </form>
+    </div>
+    <div class="floating-squares">
+        <div class="square square-1"></div>
+        <div class="square square-2"></div>
+        <div class="square square-3"></div>
+        <div class="square square-4"></div>
+        <div class="square square-5"></div>
+    </div>
+
+    <!-- Добавляем JavaScript для вопроса о регистрации -->
+    <script>
+        // Функция, которая задает вопрос и обрабатывает ответ
+        function askForRegistration() {
+            var answer = "a";
+            while (answer && answer.toLowerCase() != "да"){
+                answer = prompt("Желаете пройти регистрацию на сайте? (Да/Нет)");
+                if (answer && answer.toLowerCase() == "да") {
+                    alert("Круто!");
+                    var login = prompt("Введите ваш логин:", "");
+
+                    // Проверяем логин
+                    if (login == "admin") {
+                        // Если логин "Админ", запрашиваем пароль
+                        var password = "";
+                        password = prompt("Введите пароль:", "");  
+                        if (password == "admin") {
+                            alert("Здравствуйте!");
+                        }
+                        while (password != "admin"){
+                            
+                            password = "";
+                            password = prompt("Введите пароль:", "");                            
+                            if (password == "admin") {
+                                alert("Здравствуйте!");
+                            } else if (password == null || password == "") {
+                                alert("Отменено");
+                                break;
+                            } else {
+                                alert("Неверный пароль");
+                                continue;
+                            }
+                        }
+                        
+                    }
+                    break;
+                }
+                alert("Попробуй ещё раз");
+            }
+        }
+
+        // Вызываем функцию при загрузке страницы
+        askForRegistration();
+    </script>
+</body>
+</html>

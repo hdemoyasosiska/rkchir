@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СветЛуны</title>
+    <link rel="icon" href="favicon.ico" sizes="any">
+
+    <link rel="stylesheet" href="sssENTER.css">
+</head>
+<body>
+    <form action="sss.html" target="_self" class="catalog_b">
+        <div id="shimmer" ><button  class="shimmer">На главную</div>
+      </form>
+    <form id="captchaForm" class="glassmorphism-form">
+        <div id="captchaContainer"></div>
+        <input type="text" id="captchaInput" placeholder="Введите капчу">
+        <button type="button" onclick="checkCaptcha()">Отправить</button>
+        <p id="errorMessage" style="color: red;"></p>
+    </form>
+
+    <script>
+        function generateLetterCaptcha() {
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const captcha = alphabet[Math.floor(Math.random() * alphabet.length)];
+            return captcha;
+        }
+
+        function generateNumberCaptcha() {
+            const num1 = Math.floor(Math.random() * 10);
+            const num2 = Math.floor(Math.random() * 10);
+            const captcha = `${num1} + ${num2}`;
+            return { captcha, answer: num1 + num2 };
+        }
+
+        function generateCaptcha() {
+            const container = document.getElementById("captchaContainer");
+            container.innerHTML = "";
+
+            const useNumbers = Math.random() < 0.5;
+            if (useNumbers) {
+                const { captcha, answer } = generateNumberCaptcha();
+                container.innerText = captcha;
+                sessionStorage.setItem("captchaAnswer", answer.toString());
+            } else {
+                const captcha = generateLetterCaptcha();
+                container.innerText = captcha;
+                sessionStorage.setItem("captchaAnswer", captcha);
+            }
+        }
+
+        function checkCaptcha() {
+            const userInput = document.getElementById("captchaInput").value;
+            const errorMessage = document.getElementById("errorMessage");
+
+            if (!userInput) {
+                errorMessage.innerText = "Введите значение капчи.";
+                return;
+            }
+
+            const captchaAnswer = sessionStorage.getItem("captchaAnswer");
+            if (userInput === captchaAnswer) {
+                errorMessage.innerText = "Капча пройдена!";
+                window.location.href = 'sssENTER.html';
+            } else {
+                errorMessage.innerText = "Неверное значение капчи. Попробуйте еще раз.";
+                generateCaptcha();  
+            }
+        }
+
+        window.onload = function () {
+            generateCaptcha();  // Генерация первой капчи при загрузке страницы
+        };
+    </script>
+</body>
+</html>

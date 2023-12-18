@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="14.css">
+    <title>Confirmation on Link Click</title>
+</head>
+<body>
+
+<div id="contents">
+  <!-- Динамическое содержимое с вложенными тегами и ссылками -->
+  <p>Some text with a <a href="https://example.com">link</a></p>
+  <p>Another paragraph with <a href="https://example2.com"><i>italic link</i></a></p>
+</div>
+
+<script>
+document.getElementById('contents').addEventListener('click', function(event) {
+  var targetElement = event.target;
+
+  // Проверяем, является ли элемент ссылкой или содержит ссылку
+  while (targetElement && !targetElement.href) {
+    targetElement = targetElement.parentNode;
+  }
+
+  // Если элемент содержит ссылку, обрабатываем событие
+  if (targetElement && targetElement.href) {
+    // Задаем пользователю вопрос о переходе
+    var confirmLeave = window.confirm("Вы уверены, что хотите покинуть страницу?");
+
+    // Если пользователь отказывается, отменяем переход
+    if (!confirmLeave) {
+      event.preventDefault();
+    }
+  }
+});
+</script>
+
+
+<div class="gallery">
+    <div class="main-image">
+        <img src="30px.png" alt="Main Image" id="mainImage">
+      </div>
+    <div class="thumbnails">
+      <img src="crown.jpg" alt="Thumbnail 1" onclick="changeImage('crown.jpg')">
+      <img src="eleph.jpg" alt="Thumbnail 2" onclick="changeImage('eleph.jpg')">
+      <img src="list.jpg" alt="Thumbnail 2" onclick="changeImage('list.jpg')">
+      <img src="grass.jpg" alt="Thumbnail 2" onclick="changeImage('grass.jpg')">
+
+
+    </div>
+
+  </div>
+  
+  
+  <script>
+    function changeImage(imageUrl) {
+        var mainImage = document.getElementById('mainImage');
+        mainImage.src = imageUrl;
+    }
+
+  </script>
+  
+  <ul id="customList">
+    <li>Элемент 1</li>
+    <li>Элемент 2</li>
+    <li>Элемент 3</li>
+    <li>Элемент 4</li>
+    <li>Элемент 5</li>
+  </ul>
+  
+  <script src="14.js"></script>
+  <br>
+  <br>
+  <br>
+  <div class="slider-container">
+    <div class="slider-track" id="sliderTrack">
+      <div class="slider-thumb" id="sliderThumb"></div>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+  var sliderTrack = document.getElementById("sliderTrack");
+  var sliderThumb = document.getElementById("sliderThumb");
+
+  var isDragging = false;
+
+  sliderThumb.addEventListener("mousedown", function(event) {
+    isDragging = true;
+    sliderThumb.style.cursor = "grabbing";
+  });
+
+  document.addEventListener("mousemove", function(event) {
+    if (isDragging) {
+      var newPosition = event.clientX - sliderTrack.getBoundingClientRect().left;
+      newPosition = Math.max(0, Math.min(newPosition, sliderTrack.clientWidth - sliderThumb.clientWidth));
+
+      sliderThumb.style.left = newPosition + "px";
+    }
+  });
+
+  document.addEventListener("mouseup", function() {
+    if (isDragging) {
+      isDragging = false;
+      sliderThumb.style.cursor = "grab";
+    }
+  });
+
+  // Дополнительно: обработка события для поддержки тач-устройств
+  sliderThumb.addEventListener("touchstart", function(event) {
+    isDragging = true;
+  });
+
+  document.addEventListener("touchmove", function(event) {
+    if (isDragging) {
+      var newPosition = event.touches[0].clientX - sliderTrack.getBoundingClientRect().left;
+      newPosition = Math.max(0, Math.min(newPosition, sliderTrack.clientWidth - sliderThumb.clientWidth));
+
+      sliderThumb.style.left = newPosition + "px";
+    }
+  });
+
+  document.addEventListener("touchend", function() {
+    if (isDragging) {
+      isDragging = false;
+    }
+  });
+});
+
+  </script>
+
+<br>
+<br>
+<br>
+<div class="items">
+    <div class="item" draggable="true" data-price="10">Товар 1 - 10$</div>
+    <div class="item" draggable="true" data-price="15">Товар 2 - 15$</div>
+    <div class="item" draggable="true" data-price="20">Товар 3 - 20$</div>
+  </div>
+  
+  <div class="cart" id="cart">
+    <p>Корзина</p>
+    <p id="totalPrice">Итоговая стоимость: $0</p>
+  </div>
+  
+  <script >
+    document.addEventListener("DOMContentLoaded", function() {
+  var items = document.querySelectorAll(".item");
+  var cart = document.getElementById("cart");
+  var totalPriceElement = document.getElementById("totalPrice");
+  var totalCartPrice = 0;
+
+  items.forEach(function(item) {
+    item.addEventListener("dragstart", function(event) {
+      event.dataTransfer.setData("text/plain", item.dataset.price);
+    });
+  });
+
+  cart.addEventListener("dragover", function(event) {
+    event.preventDefault();
+  });
+
+  cart.addEventListener("drop", function(event) {
+    event.preventDefault();
+
+    var price = parseInt(event.dataTransfer.getData("text/plain"));
+    totalCartPrice += price;
+
+    totalPriceElement.textContent = "Итоговая стоимость: $" + totalCartPrice;
+  });
+});
+
+  </script>
+  
+
+  <div class="content">
+    <h1>Добро пожаловать!</h1>
+    <p id="fadeInOut">Этот текст будет появляться и исчезать</p>
+  </div>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+  var body = document.body;
+  var fadeInOutElement = document.getElementById("fadeInOut");
+
+  // Анимация изменения цвета фона
+  setInterval(function() {
+    var randomColor = getRandomColor();
+    body.style.backgroundColor = randomColor;
+  }, 3000);
+
+  // Анимация появления и исчезания элемента
+  setInterval(function() {
+    var currentOpacity = parseFloat(getComputedStyle(fadeInOutElement).opacity);
+    fadeInOutElement.style.opacity = currentOpacity === 1 ? 0 : 1;
+  }, 2000);
+
+  function getRandomColor() {
+    var letters = "0123456789ABCDEF";
+    var color = "#";
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+});
+
+  </script>
+</body>
+</html>
